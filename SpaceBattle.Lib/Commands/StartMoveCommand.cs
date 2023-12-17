@@ -16,8 +16,9 @@ public class StartMoveCommand : ICommand
         IoC.Resolve<ICommand>("Object.SetProperty", _obj.UObject, parameter.Key, parameter.Value).Execute());
 
         var mCommand = IoC.Resolve<ICommand>("Commands.MoveCommand", _obj.UObject);
-        IoC.Resolve<ICommand>("Object.SetProperty", _obj.UObject, "Commands.MoveCommand", mCommand);
-        IoC.Resolve<IQueue>("Queue.Push").Push(mCommand);
+        var injectCommand= IoC.Resolve<ICommand>("Commands.Inject", _obj.UObject);
+        IoC.Resolve<ICommand>("Object.SetProperty", _obj.UObject, "Commands.InjectMoveCommand", injectCommand);
+        IoC.Resolve<IQueue>("Queue.Push").Push(injectCommand);
 
     }
 }

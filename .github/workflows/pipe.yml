@@ -23,7 +23,7 @@ jobs:
         run:  dotnet restore SpaceBattle.Lib.Tests
 
       - name: SpaceBattle test
-        run: cd SpaceBattle.Lib.Tests/ && dotnet test /p:CollectCoverage=true & cd ..
+        run: cd SpaceBattle.Lib.Tests/ && dotnet test /p:CollectCoverage=true && cd ..
 
       - name: Verify format
         run: dotnet format --verify-no-changes
