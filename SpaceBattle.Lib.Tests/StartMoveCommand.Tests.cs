@@ -9,7 +9,7 @@ public class StartMovementTest
         new InitScopeBasedIoCImplementationCommand().Execute();
         var queueMock = new Mock<IQueue>();
         var mockCommand = new Mock<SpaceBattle.Lib.ICommand>();
-        var InjectCommand = new Mock<ICommand>();
+        var InjectCommand = new Mock<SpaceBattle.Lib.ICommand>();
 
         IoC.Resolve<ICommand>("Scopes.Current.Set",
             IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))
@@ -20,17 +20,18 @@ public class StartMovementTest
         IoC.Resolve<ICommand>("IoC.Register", "Object.SetProperty", (object[] args) => mockCommand.Object).Execute();
         IoC.Resolve<ICommand>("IoC.Register", "Commands.MoveCommand", (object[] args) => mockCommand.Object).Execute();
         IoC.Resolve<ICommand>("IoC.Register", "Queue.Push", (object[] args) => queueMock.Object).Execute();
-        IoC.Resolve<ICommand>("IoC.Register","Commands.InjectMoveCommand",(object[] args) => InjectCommand.Object).Execute();
+        IoC.Resolve<ICommand>("IoC.Register", "Commands.Inject", (object[] args) => InjectCommand.Object).Execute();
     }
 
     [Fact]
     public void PositiveStartMoveCommand()
     {
-    
+
         var mockUObject = new Mock<IUObject>();
         var mockQueue = new Mock<IQueue>();
 
         var mockStartable = new Mock<IMoveCommandStartable>();
+
         mockStartable.SetupGet(x => x.UObject).Returns(mockUObject.Object).Verifiable();
         mockStartable.SetupGet(x => x.Parameters).Returns(
             new Dictionary<string, object> { { "Velocity", new Vector(new int[] { 2, 1 }) } }
