@@ -1,25 +1,24 @@
-namespace SpaceBattle.Lib;
-using Hwdtech;
+﻿using Hwdtech;
 
 public class CreateMacroCommand
 {
-    private readonly string _dependencyName;
+    private readonly string _commandsNames;
 
-    public CreateMacroCommand(string dependencyName)
+    public CreateMacroCommand(string commandsNames)
     {
-        _dependencyName = dependencyName;
+        _commandsNames = commandsNames;
     }
 
-    public ICommand[] CreateCommand()
+    public ICommand[] SeparationCommand()
     {
-        var cmds = new List<ICommand>();
-        var cmdNames = IoC.Resolve<string[]>(_dependencyName);
+        var commandList = new List<ICommand>();
+        var commandArrayNames = IoC.Resolve<string[]>(_commandsNames);
 
-        cmdNames.ToList().ForEach(cmd_name =>
+        foreach (var commandName in commandArrayNames)
         {
-            cmds.Add(IoC.Resolve<ICommand>(cmd_name));
-        });
+            commandList.Add(IoC.Resolve<ICommand>(commandName));
+        }
 
-        return cmds.ToArray();
+        return commandList.ToArray();
     }
 }

@@ -1,10 +1,10 @@
-namespace SpaceBattle.Lib;
-
+﻿using Hwdtech;
 public class MacroCommand : ICommand
 {
-    private ICommand[] _commands;
+    private readonly IList<ICommand> _commands;
 
-    public MacroCommand(ICommand[] commands){
+    public MacroCommand(IList<ICommand> commands)
+    {
 
         _commands = commands;
     }
