@@ -4,15 +4,11 @@ namespace SpaceBattle.Lib
 {
     public class HandlerException : IHandler
     {
-        private Type _commandType;
-        private Type _exceptionType;
-
         public ICommand SearchHandler(params Type[] args)
         {
             //Получаем типы для поиска обработчика
-            _commandType = args[0];
-            _exceptionType = args[1];
-
+            var _commandType = args[0];
+            var _exceptionType = args[1];
             //Дерево с типом комманды и с объектом (обработчик или <тип ошибки,обработчик> )
             var tree = IoC.Resolve<Dictionary<Type, object>>("Commands.Tree");
 
@@ -31,7 +27,6 @@ namespace SpaceBattle.Lib
             {
                 //берем словарь ошибок и обработчиков
                 var exTree = (Dictionary<Type, object>)subtree;
-
                 //если нет обработчика для ошибок то получаем дефолтный для команды из айока
                 var handler = (ICommand)exTree.GetValueOrDefault(_exceptionType, IoC.Resolve<ICommand>("Commands.Handler", _commandType));
                 return handler;
