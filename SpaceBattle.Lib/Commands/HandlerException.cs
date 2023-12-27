@@ -27,8 +27,10 @@ namespace SpaceBattle.Lib
             }   
             // если получен словарь из ошибок и обработчиков
             else
-            {
+            {   
+                //берем словарь ошибок и обработчиков
                 var exTree = (Dictionary<Type, object>)subtree;
+                //и получаем обработчик уже для словаря ошибок 
                 var handler = (ICommand)exTree.GetValueOrDefault(_exceptionType, IoC.Resolve<ICommand>("Commands.Handler", _commandType));
                 return handler;
             }
