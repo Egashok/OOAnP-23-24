@@ -28,9 +28,18 @@ public class StartMovementTest
     {
 
         var mockUObject = new Mock<IUObject>();
-        var mockQueue = new Mock<IQueue>();
-
+    
         var mockStartable = new Mock<IMoveCommandStartable>();
+
+
+         var qMock = new Mock<IQueue>();
+        var qReal = new Queue<SpaceBattle.Lib.ICommand>();
+        qMock.Setup(q => q.Pop()).Returns( () => qReal.Dequeue() );
+        qMock.Setup(q => q.Push(It.IsAny<SpaceBattle.Lib.ICommand>())).Callback(
+            (SpaceBattle.Lib.ICommand cmd) => {
+                qReal.Enqueue(cmd);
+            }
+        );
 
         mockStartable.SetupGet(x => x.UObject).Returns(mockUObject.Object).Verifiable();
         mockStartable.SetupGet(x => x.Parameters).Returns(
@@ -40,6 +49,7 @@ public class StartMovementTest
         var StartMoveCommand = new StartMoveCommand(mockStartable.Object);
         StartMoveCommand.Execute();
         mockStartable.VerifyAll();
+
     }
 
     [Fact]
